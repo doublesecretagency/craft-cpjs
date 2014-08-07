@@ -19,7 +19,7 @@ class CpJsPlugin extends BasePlugin
 
     public function getVersion()
     {
-        return '1.0.1';
+        return '1.0.2';
     }
 
     public function getDeveloper()
@@ -56,7 +56,7 @@ class CpJsPlugin extends BasePlugin
             if ($hash = @sha1_file($filepath)) {
                 craft()->templates->includeJsFile($filepath.'?e='.$hash);
             } else {
-                craft()->templates->includeJs('alert("Control Panel JS - File does not exist:\n'.$filepath.'");');
+                craft()->userSession->setError('Control Panel JS - File does not exist ('.basename($filepath).')');
             }
         }
         if (trim($settings->additionalJs)) {
