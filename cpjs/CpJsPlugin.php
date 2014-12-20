@@ -19,7 +19,7 @@ class CpJsPlugin extends BasePlugin
 
     public function getVersion()
     {
-        return '1.0.4';
+        return '1.0.5';
     }
 
     public function getDeveloper()
@@ -43,11 +43,36 @@ class CpJsPlugin extends BasePlugin
 
     public function getSettingsHtml()
     {
-        // @TODO: http://codemirror.net/
-        craft()->templates->includeCssResource('cpjs/css/settings.css');
+        $this->_loadCodeMirror();
         return craft()->templates->render('cpjs/_settings', array(
             'settings' => $this->getSettings(),
         ));
+    }
+
+    private function _loadCodeMirror()
+    {
+        if ($this->_actualSettingsPage()) {
+            craft()->templates->includeCssResource('cpjs/css/codemirror.css');
+            craft()->templates->includeCssResource('cpjs/css/blackboard.css');
+            craft()->templates->includeJsResource('cpjs/js/codemirror-javascript.js');
+            craft()->templates->includeJs('
+$(function () {
+    CodeMirror.fromTextArea(document.getElementById("settings-additionalJs"), {
+        indentUnit: 4,
+        styleActiveLine: true,
+        lineNumbers: true,
+        lineWrapping: true,
+        theme: "blackboard"
+    });
+});', true);
+        }
+    }
+
+    private function _actualSettingsPage()
+    {
+        $currentUrl = craft()->request->getUrl();
+        $admin = craft()->config->get('cpTrigger');
+        return ("/$admin/settings/plugins/cpjs" == $currentUrl);
     }
 
     private function _renderJs()

@@ -10,9 +10,9 @@ After you've installed the plugin, go to:
 Your custom JavaScript can be saved in either (or both) of two places:
 
 **1) An external file in your public directory...**
-![](cpjs/resources/images/example-jsFile.png)
+![](README-images/example-jsFile.png)
 
 **2) The "Additional JavaScript" field on the settings page...**
-![](cpjs/resources/images/example-additionalJs.png)
+![](README-images/example-additionalJs.png)
 
 You can customize your JavaScript in any way you see fit!
