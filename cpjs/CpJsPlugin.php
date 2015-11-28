@@ -17,9 +17,24 @@ class CpJsPlugin extends BasePlugin
         return Craft::t('Control Panel JS');
     }
 
+    public function getDescription()
+    {
+        return 'Add custom JavaScript to your Control Panel';
+    }
+
+    public function getDocumentationUrl()
+    {
+        return 'https://github.com/lindseydiloreto/craft-cpjs';
+    }
+
     public function getVersion()
     {
-        return '1.0.5';
+        return '1.1.0';
+    }
+
+    public function getSchemaVersion()
+    {
+        return '1.1.0';
     }
 
     public function getDeveloper()
@@ -90,5 +105,5 @@ $(function () {
             craft()->templates->includeJs($settings->additionalJs);
         }
     }
-    
+
 }
