@@ -19,7 +19,7 @@ class CpJsPlugin extends BasePlugin
 
     public function getDescription()
     {
-        return 'Add custom JavaScript to your Control Panel';
+        return 'Add custom JavaScript to your Control Panel.';
     }
 
     public function getDocumentationUrl()
