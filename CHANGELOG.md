@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.1.0 - 2018-01-01
+
+### Added
+- Custom JS now loads _after_ the default Craft JS.
+
+### Changed
+- Refactored to make better use of Asset Bundles.
+- Refactored to load custom JS just before template loads.
+
 ## 2.0.1 - 2017-12-30
 
 ### Changed

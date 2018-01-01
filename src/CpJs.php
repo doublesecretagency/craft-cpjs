@@ -11,10 +11,15 @@
 
 namespace doublesecretagency\cpjs;
 
+use yii\base\Event;
+
 use Craft;
 use craft\base\Plugin;
+use craft\events\TemplateEvent;
+use craft\web\View;
 
 use doublesecretagency\cpjs\models\Settings;
+use doublesecretagency\cpjs\web\assets\CustomAssets;
 use doublesecretagency\cpjs\web\assets\SettingsAssets;
 
 /**
@@ -35,9 +40,27 @@ class CpJs extends Plugin
     {
         parent::init();
         self::$plugin = $this;
-        if (Craft::$app->getRequest()->getIsCpRequest()) {
-            $this->_renderJs();
+        // If not control panel request, bail
+        if (!Craft::$app->getRequest()->getIsCpRequest()) {
+            return false;
         }
+        // Load JS before template is rendered
+        Event::on(
+            View::class,
+            View::EVENT_BEFORE_RENDER_TEMPLATE,
+            function (TemplateEvent $event) {
+                // Get view
+                $view = Craft::$app->getView();
+                // Load JS file
+                $view->registerAssetBundle(CustomAssets::class);
+                // Load additional JS
+                $settings = $this->getSettings();
+                $js = trim($settings->additionalJs);
+                if ($js) {
+                    $view->registerJs($js, View::POS_END);
+                }
+            }
+        );
     }
 
     /**
@@ -53,53 +76,14 @@ class CpJs extends Plugin
      */
     protected function settingsHtml(): string
     {
-        $this->_loadCodeMirror();
+        $view = Craft::$app->getView();
+        $view->registerAssetBundle(SettingsAssets::class);
         $overrideKeys = array_keys(Craft::$app->getConfig()->getConfigFromFile('cp-js'));
-        return Craft::$app->getView()->renderTemplate('cp-js/settings', [
+        return $view->renderTemplate('cp-js/settings', [
             'settings' => $this->getSettings(),
             'overrideKeys' => $overrideKeys,
             'docsUrl' => $this->documentationUrl,
         ]);
-    }
-
-    /**
-     * @return void
-     */
-    private function _loadCodeMirror()
-    {
-        $view = Craft::$app->getView();
-        $view->registerAssetBundle(SettingsAssets::class);
-        $view->registerJs('
-$(function () {
-    console.log("Loading CodeMirror...");
-    CodeMirror.fromTextArea(document.getElementById("settings-additionalJs"), {
-        indentUnit: 4,
-        styleActiveLine: true,
-        lineNumbers: true,
-        lineWrapping: true,
-        theme: "blackboard"
-    });
-});');
-    }
-
-    /**
-     * @return void
-     */
-    private function _renderJs()
-    {
-        $view = Craft::$app->getView();
-        $settings = $this->getSettings();
-        if (trim($settings->jsFile)) {
-            $filepath = $settings->jsFile;
-            if ($hash = @sha1_file($filepath)) {
-                $view->registerJsFile($filepath.'?e='.$hash);
-            } else {
-                $view->registerJsFile($filepath);
-            }
-        }
-        if (trim($settings->additionalJs)) {
-            $view->registerJs($settings->additionalJs);
-        }
     }
 
 }

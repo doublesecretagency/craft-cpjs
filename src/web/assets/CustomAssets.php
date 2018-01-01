@@ -14,11 +14,13 @@ namespace doublesecretagency\cpjs\web\assets;
 use craft\web\AssetBundle;
 use craft\web\assets\cp\CpAsset;
 
+use doublesecretagency\cpjs\CpJs;
+
 /**
- * Class SettingsAssets
- * @since 2.0.0
+ * Class CustomAssets
+ * @since 2.1.0
  */
-class SettingsAssets extends AssetBundle
+class CustomAssets extends AssetBundle
 {
 
     /** @inheritdoc */
@@ -26,18 +28,20 @@ class SettingsAssets extends AssetBundle
     {
         parent::init();
 
-        $this->sourcePath = '@doublesecretagency/cpjs/resources';
         $this->depends = [CpAsset::class];
 
-        $this->css = [
-            'css/codemirror.css',
-            'css/blackboard.css',
-        ];
+        $settings = CpJs::$plugin->getSettings();
 
-        $this->js = [
-            'js/codemirror-javascript.js',
-            'js/blackboard.js',
-        ];
+        $file = trim($settings['jsFile']);
+
+        if ($file) {
+            // Cache buster
+            if ($hash = @sha1_file($file)) {
+                $file .= '?e='.$hash;
+            }
+            // Load JS file
+            $this->js = [$file];
+        }
     }
 
 }
