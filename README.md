@@ -3,6 +3,14 @@ Control Panel JS plugin for Craft CMS
 
 Easily insert additional JavaScript into the Craft Control Panel.
 
+***
+
+>This version is for Craft 3. To install it, visit the Plugin Store in your site's Control Panel.
+>
+>For the Craft 2 version, see the [`v1` branch...](https://github.com/doublesecretagency/craft-cpjs/tree/v1)
+
+***
+
 After you've installed the plugin, go to:
 
 - **Settings > Plugins > Control Panel JS**
