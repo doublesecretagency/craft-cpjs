@@ -11,6 +11,7 @@
 
 namespace doublesecretagency\cpjs\web\assets;
 
+use Craft;
 use craft\web\AssetBundle;
 use craft\web\assets\cp\CpAsset;
 use doublesecretagency\cpjs\CpJs;
@@ -33,7 +34,7 @@ class CustomAssets extends AssetBundle
 
         $settings = CpJs::$plugin->getSettings();
 
-        $file = trim($settings['jsFile']);
+        $file = trim(Craft::parseEnv($settings['jsFile']));
 
         if ($file) {
 

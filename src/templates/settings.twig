@@ -10,11 +10,13 @@
 
 <p>Your custom JavaScript will be applied to the entire Control Panel.</p>
 
-{{ forms.textField({
+{{ forms.autosuggestField({
     label: "JavaScript File"|t,
     instructions: "Enter the path to your JavaScript file."|t,
     id: 'jsFile',
     name: 'jsFile',
+    suggestEnvVars: true,
+    suggestAliases: true,
     value: settings.jsFile,
     disabled: 'jsFile' in overrideKeys,
     warning: 'jsFile' in overrideKeys ? configWarning('jsFile', docsUrl)
