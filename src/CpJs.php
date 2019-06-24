@@ -11,16 +11,14 @@
 
 namespace doublesecretagency\cpjs;
 
-use yii\base\Event;
-
 use Craft;
 use craft\base\Plugin;
 use craft\events\TemplateEvent;
 use craft\web\View;
-
 use doublesecretagency\cpjs\models\Settings;
 use doublesecretagency\cpjs\web\assets\CustomAssets;
 use doublesecretagency\cpjs\web\assets\SettingsAssets;
+use yii\base\Event;
 
 /**
  * Class CpJs
@@ -29,42 +27,54 @@ use doublesecretagency\cpjs\web\assets\SettingsAssets;
 class CpJs extends Plugin
 {
 
-    /** @var Plugin  $plugin  Self-referential plugin property. */
+    /**
+     * @var CpJs Self-referential plugin property.
+     */
     public static $plugin;
 
-    /** @var bool  $hasCpSettings  The plugin has a settings page. */
+    /**
+     * @var bool The plugin has a settings page.
+     */
     public $hasCpSettings = true;
 
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     */
     public function init()
     {
         parent::init();
         self::$plugin = $this;
+
         // If not control panel request, bail
         if (!Craft::$app->getRequest()->getIsCpRequest()) {
             return false;
         }
+
         // Load JS before template is rendered
         Event::on(
             View::class,
             View::EVENT_BEFORE_RENDER_TEMPLATE,
             function (TemplateEvent $event) {
+
                 // Get view
                 $view = Craft::$app->getView();
+
                 // Load JS file
                 $view->registerAssetBundle(CustomAssets::class);
+
                 // Load additional JS
                 $settings = $this->getSettings();
                 $js = trim($settings->additionalJs);
                 if ($js) {
                     $view->registerJs($js, View::POS_END);
                 }
+
             }
         );
     }
 
     /**
-     * @return Settings  Plugin settings model.
+     * @return Settings Plugin settings model.
      */
     protected function createSettingsModel()
     {
@@ -72,13 +82,15 @@ class CpJs extends Plugin
     }
 
     /**
-     * @return string  The fully rendered settings template.
+     * @return string The fully rendered settings template.
      */
     protected function settingsHtml(): string
     {
         $view = Craft::$app->getView();
         $view->registerAssetBundle(SettingsAssets::class);
+
         $overrideKeys = array_keys(Craft::$app->getConfig()->getConfigFromFile('cp-js'));
+
         return $view->renderTemplate('cp-js/settings', [
             'settings' => $this->getSettings(),
             'overrideKeys' => $overrideKeys,

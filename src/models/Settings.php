@@ -20,10 +20,14 @@ use craft\base\Model;
 class Settings extends Model
 {
 
-    /** @var string|null  $jsFile  Path for the JS file to load in the control panel. */
-    public $jsFile;
+    /**
+     * @var string Path for the JS file to load in the control panel.
+     */
+    public $jsFile = '';
 
-    /** @var string|null  $additionalJs  Any additional JS which may be added directly. */
-    public $additionalJs;
+    /**
+     * @var string Any additional JS which may be added directly.
+     */
+    public $additionalJs = '';
 
 }
