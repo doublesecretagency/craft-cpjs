@@ -2,7 +2,7 @@
     "name": "doublesecretagency/craft-cpjs",
     "description": "Add custom JavaScript to your Control Panel.",
     "type": "craft-plugin",
-    "version": "2.2.0",
+    "version": "2.2.1",
     "keywords": [
         "craft",
         "cms",
