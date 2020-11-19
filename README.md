@@ -11,7 +11,7 @@ After you've installed the plugin, go to:
 
 Your custom JavaScript can be saved in either (or both) of two places:
 
-**1) An external file in your public directory...**
+**1) One or more external files in your public directory delimited by commas...**
 ![](src/resources/img/example-jsFile.png)
 
 **2) The "Additional JavaScript" field on the settings page...**
