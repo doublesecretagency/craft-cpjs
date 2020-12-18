@@ -30,33 +30,43 @@ class CustomAssets extends AssetBundle
     {
         parent::init();
 
+        // Requires standard CP assets to be loaded first
         $this->depends = [CpAsset::class];
 
+        // Get plugin settings
         $settings = CpJs::$plugin->getSettings();
 
-        $file = trim(Craft::parseEnv($settings['jsFile']));
+        // Get the file (or files) specified
+        $file = trim($settings['jsFile']);
 
-        $finalPaths = [];
+        // If no file was specified, bail
+        if (!$file) {
+            return;
+        }
 
-        if ($file) {
+        // Initialize a collection of paths
+        $paths = [];
 
-            $files = explode(',', $file);
-            foreach ($files as $file) {
-                $file = trim($file);
+        // Allow for comma-separated file paths
+        $files = explode(',', $file);
 
-                // Cache buster
-                if ($hash = @sha1_file($file)) {
-                    $file .= '?e='.$hash;
-                }
+        // Loop through specified files
+        foreach ($files as $file) {
 
-                array_push($finalPaths, $file);
+            // Parse each filename for aliases
+            $file = Craft::parseEnv(trim($file));
 
+            // Bust the cache
+            if ($hash = @sha1_file($file)) {
+                $file .= '?e='.$hash;
             }
 
-            // Load all cachebusted JS files
-            $this->js = $finalPaths;
-
+            // Add file to path collection
+            $paths[] = $file;
         }
+
+        // Load all files
+        $this->js = $paths;
     }
 
 }

@@ -7,11 +7,11 @@ Easily insert additional JavaScript into the Craft Control Panel.
 
 After you've installed the plugin, go to:
 
-- **Settings > Plugins > Control Panel JS**
+- **Settings > Control Panel JS**
 
 Your custom JavaScript can be saved in either (or both) of two places:
 
-**1) One or more external files in your public directory delimited by commas...**
+**1) An external file in your public directory...**
 ![](src/resources/img/example-jsFile.png)
 
 **2) The "Additional JavaScript" field on the settings page...**
