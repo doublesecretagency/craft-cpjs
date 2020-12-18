@@ -36,15 +36,25 @@ class CustomAssets extends AssetBundle
 
         $file = trim(Craft::parseEnv($settings['jsFile']));
 
+        $finalPaths = [];
+
         if ($file) {
 
-            // Cache buster
-            if ($hash = @sha1_file($file)) {
-                $file .= '?e='.$hash;
+            $files = explode(',', $file);
+            foreach ($files as $file) {
+                $file = trim($file);
+
+                // Cache buster
+                if ($hash = @sha1_file($file)) {
+                    $file .= '?e='.$hash;
+                }
+
+                array_push($finalPaths, $file);
+
             }
 
-            // Load JS file
-            $this->js = [$file];
+            // Load all cachebusted JS files
+            $this->js = $finalPaths;
 
         }
     }
