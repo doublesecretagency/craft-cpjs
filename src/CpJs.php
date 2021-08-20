@@ -50,10 +50,10 @@ class CpJs extends Plugin
             return false;
         }
 
-        // Load JS before template is rendered
+        // Load JS before page template is rendered
         Event::on(
             View::class,
-            View::EVENT_BEFORE_RENDER_TEMPLATE,
+            View::EVENT_BEFORE_RENDER_PAGE_TEMPLATE,
             function (TemplateEvent $event) {
 
                 // Get view
