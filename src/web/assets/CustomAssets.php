@@ -44,9 +44,6 @@ class CustomAssets extends AssetBundle
             return;
         }
 
-        // Initialize a collection of paths
-        $paths = [];
-
         // Allow for comma-separated file paths
         $files = explode(',', $file);
 
@@ -56,17 +53,55 @@ class CustomAssets extends AssetBundle
             // Parse each filename for aliases
             $file = Craft::parseEnv(trim($file));
 
-            // Bust the cache
-            if ($hash = @sha1_file($file)) {
-                $file .= '?e='.$hash;
+            // If no file specified, skip to the next
+            if (!$file) {
+                continue;
             }
 
-            // Add file to path collection
-            $paths[] = $file;
+            // If cache busting is enabled
+            if ($settings['cacheBusting']) {
+                // Reference file with a hash
+                $this->js[] = $this->_addHash($file);
+            } else {
+                // Reference file without a hash
+                $this->js[] = $file;
+            }
+
+        }
+    }
+
+    /**
+     * Add a unique file hash for cache busting.
+     *
+     * @param string $file
+     * @return string
+     */
+    private function _addHash(string $file): string
+    {
+        // Get file contents
+        $contents = @file_get_contents($file);
+
+        // If unable to retrieve file contents
+        if (!$contents) {
+            // Log warning
+            Craft::warning("Can't bust cache of CP JS, unable to load contents of $file");
+            // Return file without hash
+            return $file;
         }
 
-        // Load all files
-        $this->js = $paths;
+        // Get hash of contents
+        $hash = @sha1($contents);
+
+        // If unable to hash file contents
+        if (!$hash) {
+            // Log warning
+            Craft::warning("Can't bust cache for CP JS, unable to hash contents of $file");
+            // Return file without hash
+            return $file;
+        }
+
+        // Return file with hash
+        return "{$file}?e={$hash}";
     }
 
 }
