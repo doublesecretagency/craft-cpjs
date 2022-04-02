@@ -12,6 +12,7 @@
 namespace doublesecretagency\cpjs;
 
 use Craft;
+use craft\base\Model;
 use craft\base\Plugin;
 use craft\events\TemplateEvent;
 use craft\web\View;
@@ -30,24 +31,24 @@ class CpJs extends Plugin
     /**
      * @var CpJs Self-referential plugin property.
      */
-    public static $plugin;
+    public static CpJs $plugin;
 
     /**
      * @var bool The plugin has a settings page.
      */
-    public $hasCpSettings = true;
+    public bool $hasCpSettings = true;
 
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
         self::$plugin = $this;
 
         // If not control panel request, bail
         if (!Craft::$app->getRequest()->getIsCpRequest()) {
-            return false;
+            return;
         }
 
         // Load JS before page template is rendered
@@ -63,6 +64,7 @@ class CpJs extends Plugin
                 $view->registerAssetBundle(CustomAssets::class);
 
                 // Load additional JS
+                /** @var Settings $settings */
                 $settings = $this->getSettings();
                 $js = trim($settings->additionalJs);
                 if ($js) {
@@ -74,17 +76,17 @@ class CpJs extends Plugin
     }
 
     /**
-     * @return Settings Plugin settings model.
+     * @inheritdoc
      */
-    protected function createSettingsModel()
+    protected function createSettingsModel(): ?Model
     {
         return new Settings();
     }
 
     /**
-     * @return string The fully rendered settings template.
+     * @inheritdoc
      */
-    protected function settingsHtml(): string
+    protected function settingsHtml(): ?string
     {
         $view = Craft::$app->getView();
         $view->registerAssetBundle(SettingsAssets::class);

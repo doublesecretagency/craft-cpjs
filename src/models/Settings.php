@@ -23,16 +23,16 @@ class Settings extends Model
     /**
      * @var string Path for the JS file to load in the control panel.
      */
-    public $jsFile = '';
+    public string $jsFile = '';
 
     /**
      * @var string Any additional JS which may be added directly.
      */
-    public $additionalJs = '';
+    public string $additionalJs = '';
 
     /**
      * @var bool Whether to enable the hash-based cache busting.
      */
-    public $cacheBusting = true;
+    public bool $cacheBusting = true;
 
 }
