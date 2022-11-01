@@ -88,7 +88,6 @@ class CpJs extends Plugin
     protected function settingsHtml(): ?string
     {
         $view = Craft::$app->getView();
-
         $overrideKeys = array_keys(Craft::$app->getConfig()->getConfigFromFile('cp-js'));
 
         return $view->renderTemplate('cp-js/settings', [
