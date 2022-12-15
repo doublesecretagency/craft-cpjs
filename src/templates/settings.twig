@@ -6,6 +6,7 @@
     })|raw }}
 {%- endmacro %}
 
+{% import "codeeditor/codeEditor" as codeEditor %}
 {% from _self import configWarning %}
 
 <p>Your custom JavaScript will be applied to the entire Control Panel.</p>
@@ -22,11 +23,22 @@
     warning: 'jsFile' in overrideKeys ? configWarning('jsFile', docsUrl)
 }) }}
 
-{{ forms.textareaField({
+{% set monacoOptions = {
+    language: 'javascript',
+    theme: 'vs-dark',
+    lineNumbers: 'on',
+    lineNumbersMinChars: 4,
+    lineDecorationsWidth: 6,
+    folding: true,
+} %}
+{% set codeEditorOptions = {
+    wrapperClass:"monaco-editor-background-frame"
+} %}
+{{ codeEditor.textareaField({
     label: "Additional JavaScript"|t,
     instructions: "Enter any additional JavaScript here."|t,
     id: 'additionalJs',
     name: 'additionalJs',
     value: settings.additionalJs,
     rows: 15
-}) }}
+}, "CodeField", monacoOptions, codeEditorOptions) }}

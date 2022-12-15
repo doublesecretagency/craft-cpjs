@@ -18,7 +18,6 @@ use craft\events\TemplateEvent;
 use craft\web\View;
 use doublesecretagency\cpjs\models\Settings;
 use doublesecretagency\cpjs\web\assets\CustomAssets;
-use doublesecretagency\cpjs\web\assets\SettingsAssets;
 use yii\base\Event;
 
 /**
@@ -89,9 +88,6 @@ class CpJs extends Plugin
     protected function settingsHtml(): ?string
     {
         $view = Craft::$app->getView();
-        $view->registerAssetBundle(SettingsAssets::class);
-        $view->registerCss('.autosuggest__results-container {z-index: 10;}');
-
         $overrideKeys = array_keys(Craft::$app->getConfig()->getConfigFromFile('cp-js'));
 
         return $view->renderTemplate('cp-js/settings', [
