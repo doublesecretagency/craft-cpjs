@@ -26,7 +26,6 @@ use yii\base\Event;
  */
 class CpJs extends Plugin
 {
-
     /**
      * @var CpJs Self-referential plugin property.
      */
@@ -54,7 +53,7 @@ class CpJs extends Plugin
         Event::on(
             View::class,
             View::EVENT_BEFORE_RENDER_PAGE_TEMPLATE,
-            function (TemplateEvent $event) {
+            function(TemplateEvent $event) {
 
                 // Get view
                 $view = Craft::$app->getView();
@@ -69,7 +68,6 @@ class CpJs extends Plugin
                 if ($js) {
                     $view->registerJs($js, View::POS_END);
                 }
-
             }
         );
     }
@@ -96,5 +94,4 @@ class CpJs extends Plugin
             'docsUrl' => $this->documentationUrl,
         ]);
     }
-
 }

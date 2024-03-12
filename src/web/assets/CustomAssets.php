@@ -24,7 +24,6 @@ use doublesecretagency\cpjs\models\Settings;
  */
 class CustomAssets extends AssetBundle
 {
-
     /**
      * @inheritdoc
      */
@@ -69,7 +68,6 @@ class CustomAssets extends AssetBundle
                 // Reference file without a hash
                 $this->js[] = $file;
             }
-
         }
     }
 
@@ -95,16 +93,7 @@ class CustomAssets extends AssetBundle
         // Get hash of contents
         $hash = @sha1($contents);
 
-        // If unable to hash file contents
-        if (!$hash) {
-            // Log warning
-            Craft::warning("Can't bust cache for CP JS, unable to hash contents of $file");
-            // Return file without hash
-            return $file;
-        }
-
         // Return file with hash
         return "{$file}?e={$hash}";
     }
-
 }
